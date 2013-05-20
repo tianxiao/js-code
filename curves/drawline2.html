@@ -1,0 +1,123 @@
+<html>
+
+<body>
+<ul>
+<li>
+<canvas id="graph" width="1000" height="800"></canvas>
+</li>
+<li>
+<canvas id="graph2" width="1000" height="800"></canvas>
+</li>
+<li>
+<canvas id="graph3" width="1000" height="800"></canvas>
+</li>
+</body>
+
+<script>
+drawchart("graph");
+drawchart("graph2");
+drawchart2("graph3");
+
+function drawchart(chartId){
+
+	var graph = document.getElementById(chartId);
+	
+	graph.width = graph.width;
+	
+	var g = graph.getContext("2d");
+	var width = graph.width, height = graph.height;
+	
+	p0 = {x:0  , y:0};
+	p1 = {x:200, y:700};
+	p2 = {x:900, y:0};
+	
+	for (x=0; x<1000; x+=100) {
+		p1.x = x;
+		g.moveTo(p0.x,p0.y);
+		
+		for (t=0; t<=1; t+=0.0001) {
+			p = drawbezier(p0,p1,p2,t);
+			g.lineTo(p.x,p.y);
+		}
+		
+		g.lineWidth = 1;
+		g.stroke();
+		g.fillStyle = "black";
+	}
+	
+
+	/*
+	g.moveTo(2,2);
+	g.lineTo(20,20);
+	g.lineTo(40,40);
+	g.lineTo(40,0);
+	g.closePath();
+	g.fillStyle = "#f88";
+	*/
+
+	
+	//g.fill();
+	/*
+	g.font = "bold 12px sans-serif";
+	g.fillText("Total",50,50);
+	*/
+}
+
+function drawchart2(chartId) {
+	var graph = document.getElementById(chartId);
+	
+	graph.width = graph.width;
+	
+	var g = graph.getContext("2d");
+	var width = graph.width, height = graph.height;
+	
+	p0 = {x:0  , y:400};
+	p1 = {x:200, y:0};
+	p2 = {x:500, y:800};
+	p3 = {x:900, y:0};
+	
+	for (x2=500; x2<900; x2+=100) {
+		p2.x = x2;
+		for (x=0; x<500; x+=100) {
+			p1.x = x;
+			g.moveTo(p0.x,p0.y);
+		
+			for (t=0; t<=1; t+=0.001) {
+				p = drawbezier3(p0,p1,p2,p3,t);
+				g.lineTo(p.x,p.y);
+				//g.stroke();
+				//color = 0xffffff*t;
+				//g.strokeStyle=color;
+			}
+		
+			g.lineWidth = 0.1;
+			g.fillStyle = "red";
+			g.stroke();
+			g.strokeStyle="#91001F";
+			//.fill();
+			
+		}
+	}
+}
+
+function drawbezier(p0, p1, p2, t){
+	p={x:0, y:0};
+	p.x = (1-t)*(1-t)*p0.x + 2*t*(1-t)*p1.x + t*t*p2.x;
+	p.y = (1-t)*(1-t)*p0.y + 2*t*(1-t)*p1.y + t*t*p2.y;
+	return p;
+}
+
+function drawbezier3(p0, p1, p2, p3, t) {
+	a0 = (1-t)*(1-t)*(1-t);
+	a1 = 3*t*(1-t)*(1-t);
+	a2 = 3*t*t*(1-t);
+	a3 = t*t*t;
+	p={x:0, y:0};
+	p.x = a0*p0.x + a1*p1.x + a2*p2.x + a3*p3.x;
+	p.y = a0*p0.y + a1*p1.y + a2*p2.y + a3*p3.y;
+	return p;
+}
+
+</script> 
+
+</html>
