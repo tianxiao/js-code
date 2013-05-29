@@ -1,0 +1,21 @@
+<html>
+<body>
+<canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;">></canvas> 
+</body>
+
+<script>
+var c=document.getElementById("myCanvas");
+var g=c.getContext("2d");
+
+g.beginPath();
+var grd=g.createLinearGradient(0,0,100,0);
+grd.addColorStop(0,"red");
+grd.addColorStop(1,"blue");
+
+g.fillStyle=grd;
+g.arc(50,50,50,0,2*Math.PI,true);
+g.fill();
+
+</script>
+
+</html>
