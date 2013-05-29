@@ -16,7 +16,7 @@
 <script>
 drawchart("graph");
 //drawchart("graph2");
-//drawchart2("graph3");
+drawchart2("graph3");
 
 function drawchart(chartId){
 
@@ -45,6 +45,7 @@ function drawchart(chartId){
 	var i=0;
 	for (x=0; x<1000; x+=100) {
 		p1.x = x;
+		g.beginPath();
 		g.moveTo(p0.x,p0.y);
 		pplist[i][1].x=x;
 		console.log(i);
@@ -102,6 +103,7 @@ function drawchart2(chartId) {
 		p2.x = x2;
 		for (x=0; x<500; x+=100) {
 			p1.x = x;
+			g.beginPath();
 			g.moveTo(p0.x,p0.y);
 		
 			for (t=0; t<=1; t+=0.001) {
@@ -112,18 +114,18 @@ function drawchart2(chartId) {
 				//g.strokeStyle=color;
 			}
 		
-			g.lineWidth = 0.1;
-			g.fillStyle = "red";
+			g.lineWidth = 1;
+			g.fillStyle = "black";
 			g.stroke();
 			g.strokeStyle="#91001F";
 			//.fill();
-			
+			drawPolyLineWide(g,plist);
 		}
 	}
 	
 	// draw line represent the node as circle
-	console.log(plist);
-	drawPolyLineWide(g,plist);
+	//console.log(plist);
+	//drawPolyLineWide(g,plist);
 }
 
 function drawPolyLineWide(g,plist) {
@@ -136,13 +138,13 @@ function drawPolyLineWide(g,plist) {
 		drawGraphCircle(g,plist[i]);
 		//g.lineTo(plist[i].x,plist[i].y);
 	}
-	
+	g.beginPath();
 	// draw lines
 	g.moveTo(plist[0].x,plist[0].y);
 	for (var i=1; i<plist.length; ++i) {
 		g.lineTo(plist[i].x,plist[i].y);
 	}
-	g.lineWidth = 1;
+	g.lineWidth = 0.5;
 	g.fillStyle = "red";
 	g.stroke();
 	g.strokeStyle="#91001F";
