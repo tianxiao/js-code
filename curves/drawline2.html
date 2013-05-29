@@ -15,8 +15,8 @@
 
 <script>
 drawchart("graph");
-drawchart("graph2");
-drawchart2("graph3");
+//drawchart("graph2");
+//drawchart2("graph3");
 
 function drawchart(chartId){
 
@@ -31,9 +31,25 @@ function drawchart(chartId){
 	p1 = {x:200, y:700};
 	p2 = {x:900, y:0};
 	
+	plist = [p0,p1,p2];
+	pplist = [];
+	for (var i=0; i<10; ++i) {
+		
+		pplist.push(plist); 
+		// Here although be push a object 
+		// It actually a object reference!!!!
+		// So I put the drawPolyLineWide in the for loop
+		// Instead creat the new object
+	}
+	
+	var i=0;
 	for (x=0; x<1000; x+=100) {
 		p1.x = x;
 		g.moveTo(p0.x,p0.y);
+		pplist[i][1].x=x;
+		console.log(i);
+		console.log(pplist[i][1]);
+		i++;
 		
 		for (t=0; t<=1; t+=0.0001) {
 			p = drawbezier(p0,p1,p2,t);
@@ -43,24 +59,28 @@ function drawchart(chartId){
 		g.lineWidth = 1;
 		g.stroke();
 		g.fillStyle = "black";
+		
+		
+		drawPolyLineWide(g,plist);
 	}
 	
-
-	/*
-	g.moveTo(2,2);
-	g.lineTo(20,20);
-	g.lineTo(40,40);
-	g.lineTo(40,0);
-	g.closePath();
-	g.fillStyle = "#f88";
+	/** For testing
+	tp0 = {x:20,y:20};
+	tp1 = {x:40,y:20};
+	tp2 = {x:80,y:40};
+	tp3 = {x:200,y:100};
+	tplist = [tp0,tp1,tp2,tp3];
+	drawPolyLineWide(g,tplist);
 	*/
-
+	//console.log(pplist);
+	/**
+	pplist.forEach(function(x){
+		console.log(x);
+		drawPolyLineWide(g,x);
+	});
+	*/
 	
-	//g.fill();
-	/*
-	g.font = "bold 12px sans-serif";
-	g.fillText("Total",50,50);
-	*/
+
 }
 
 function drawchart2(chartId) {
@@ -75,6 +95,8 @@ function drawchart2(chartId) {
 	p1 = {x:200, y:0};
 	p2 = {x:500, y:800};
 	p3 = {x:900, y:0};
+	
+	var plist = [p0,p1,p2,p3];
 	
 	for (x2=500; x2<900; x2+=100) {
 		p2.x = x2;
@@ -98,6 +120,42 @@ function drawchart2(chartId) {
 			
 		}
 	}
+	
+	// draw line represent the node as circle
+	console.log(plist);
+	drawPolyLineWide(g,plist);
+}
+
+function drawPolyLineWide(g,plist) {
+	
+	//console.log(plist[0]);
+	//drawGraphCircle(g,plist[0]);
+	//g.moveTo(plist[0].x,plist[0].y);
+	// draw points
+	for (var i=0; i<plist.length; ++i) {
+		drawGraphCircle(g,plist[i]);
+		//g.lineTo(plist[i].x,plist[i].y);
+	}
+	
+	// draw lines
+	g.moveTo(plist[0].x,plist[0].y);
+	for (var i=1; i<plist.length; ++i) {
+		g.lineTo(plist[i].x,plist[i].y);
+	}
+	g.lineWidth = 1;
+	g.fillStyle = "red";
+	g.stroke();
+	g.strokeStyle="#91001F";
+}
+
+function drawGraphCircle(g,center,radius=2){
+	g.beginPath();
+	g.arc(center.x,center.y,radius,0,2*Math.PI,false);
+	g.fillStyle = "black";
+	g.fill();
+	g.lineWidth=1;
+	g.strokeStyle="black";
+	g.stroke();
 }
 
 function drawbezier(p0, p1, p2, t){
